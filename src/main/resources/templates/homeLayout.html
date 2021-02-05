@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<!-- Bootstrap -->
+<link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet"></link>
+<script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+
+<!-- CSS -->
+<link th:href="@{/css/home.css}" rel="stylesheet"></link>
+
+<title>Home</title>
+</head>
+<body>
+<!-- ヘッダー -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">Essential細胞生物学</a>
+		</div>
+		<form method="post" th:action="@{/logout}">
+			<button class="btn btn-link pull-right navbar-brand" type="submit">
+				ログアウト
+			</button>
+		</form>
+		<!-- roleがADMINの場合ユーザー登録を表示 -->
+		<form method="get" th:action="@{/signup}" sec:authorize="hasRole('ADMIN')">
+			<button class="btn btn-link pull-right navbar-brand" type="submit" >
+				ユーザー登録
+			</button>
+		</form>
+		<!-- roleがDEFAULTの場合ユーザー登録を表示 -->
+		<form method="get" th:action="@{/signup}" sec:authorize="hasRole('DEFAULT')">
+			<button class="btn btn-link pull-right navbar-brand" type="submit" >
+				ユーザー登録
+			</button>
+		</form>
+	</div>
+</nav>
+
+<!-- コンテンツ -->
+<div class="container-fluid">
+	<div class="row">
+		<div class="main">
+			<div th:include="__${contents}__"></div>
+		</div>
+ 	</div>
+</div>
+</body>
+</html>
