@@ -146,7 +146,7 @@ public class TestQuestionController {
 			Boolean end = false;
 			if(questionCount == 0) {
 				System.out.println("問題が0です");
-				return "redirect:/home";
+				return "redirect:/";
 			} else if(questionCount == number) {
 				end = true;
 			} else {
