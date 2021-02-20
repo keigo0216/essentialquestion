@@ -56,7 +56,6 @@ public class TestChapterController {
 			//questionCountが0より大きいときユーザーの章の解答率を求める
 			if(questionCount > 0) {
 				double answerRateD = (double)answerRateService.getAnswer(userId, chapter)/questionCount;
-				System.out.println(answerRateService.getAnswer(userId, chapter) + "/" + questionCount + "=" + answerRateD);
 				answerRate[chapter-1] = (int)(answerRateD*100);
 			}
 		}

@@ -1,16 +1,70 @@
 @charset "UTF-8";
 
-body{
-	padding-top: 50px;	
+
+html{
+	font-size: 100%;
+}
+
+ body{
+	padding-top: 98px;
+	line-height: 1.7;
+	font-size: 1.2rem;
+}
+
+h2,h3{
+	font-size: 1.3rem;
 }
 
 .main {
-	padding-top: 50px;
+	padding-top: 0px;
 	display: block;
 	top: 0px;
-	bottom: 0px;
+	bottom: 0px;	
 }
 
 .error {
 	color: red;
 }
+
+#question {
+	margin: 0% 3%;
+	text-align: justify;
+}
+
+table{
+	margin: 0.5% 3%;
+}
+
+table a{
+	color: black;
+}
+
+table a:hover {
+	text-decoration: none;
+}
+
+#answerTable table td:nth-child(3) {
+	background-color: #f5f5f5;
+}
+
+table.wikiTable { background-color: #f5f5f5;}
+
+a {
+	text-decoration: none;
+}
+
+#wikipedia{
+	margin: 0% 3%;
+	text-align: justify;
+}
+
+.otherWords{
+	padding-top: 2%;
+}
+
+#wikiSearch{
+	margin: 0% 3%;
+}
+
+
+

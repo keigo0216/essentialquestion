@@ -19,6 +19,7 @@ import com.Essential.domain.model.AnswerForm;
 import com.Essential.domain.service.AnswerRateService;
 import com.Essential.domain.service.QuestionService;
 import com.Essential.domain.service.TestService;
+import com.Essential.wiki.WikiService;
 
 @Controller
 public class TestQuestionController {
@@ -32,6 +33,9 @@ public class TestQuestionController {
 	@Autowired
 	private AnswerRateService answerRateService;
 	
+	@Autowired
+	private WikiService wikiService;
+	
 	//リクエストパラメーターで章番号(chapter)と問題番号(number)を受け取る
 	@GetMapping("test/question/{chapter}/{number}")
 	public String getQuestion(
@@ -39,11 +43,11 @@ public class TestQuestionController {
 			@PathVariable("chapter") int chapter,
 			@PathVariable("number") int number
 			) {
+		
 		//userIdを取得
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String userId = user.getUsername();
 				
-		model.addAttribute("contents","test/testQuestion::testQuestion_contents"); 
 		
 		//問題プロパティに登録された問題数を取得
 		int questionCount = 0;
@@ -104,12 +108,18 @@ public class TestQuestionController {
 		} catch(IllegalArgumentException e) {
 			e.printStackTrace();
 		}
+		
+		//th:fragmentの値をModelに登録
+		model.addAttribute("contents","test/testQuestion::testQuestion_contents"); 
+
 		//問題文を()で区切ってquestionWordsとしてModelに追加
 		String[] questionWords = questionService.questionWords(question);
 		model.addAttribute("questionWords", questionWords);
+		
 		//問題数をanswerCounterとしてModelに追加
 		int answerCounter = questionWords.length-1;
 		model.addAttribute("answerCounter",answerCounter);
+		
 		//answerFormをModelに登録
 		model.addAttribute(new AnswerForm());
 		
@@ -124,6 +134,7 @@ public class TestQuestionController {
 			@PathVariable("chapter") int chapter,
 			@PathVariable("number") int number
 			) {
+		
 			//userIdを取得
 			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			String userId = user.getUsername();			
@@ -137,22 +148,6 @@ public class TestQuestionController {
 			} catch(IllegalArgumentException e) {
 				e.printStackTrace();
 			}
-			
-			/*
-			 * 問題プロパティに登録された問題数(qustionCount)によって操作を変更
-			 * 問題が最後かどうかを変数endとして表し、Modelに登録
-			 * 問題数が０の場合ホームへリダイレクト,問題が最後になったときにendをtrue,それ以外のときはリンクを次の問題にする
-			 */
-			Boolean end = false;
-			if(questionCount == 0) {
-				System.out.println("問題が0です");
-				return "redirect:/";
-			} else if(questionCount == number) {
-				end = true;
-			} else {
-				model.addAttribute("nextNumber", number+1);
-			}
-			model.addAttribute("end",end);
 			
 			//問題文格納変数
 			String question = "";
@@ -178,7 +173,19 @@ public class TestQuestionController {
 				answerList = new ArrayList<String>();
 			}
 			
+			//解答リストのそれぞれのワードがWikipedia検索ができるかをチェック
+			ArrayList<Integer> checkWikiList = wikiService.checkWiki(answerList);
+			model.addAttribute("checkWikiList", checkWikiList);
 			
+			//解答フォームと解答の正誤判定
+			try {
+				checkList = questionService.checkAnswer(answerForm, answerList);
+			} catch(IllegalArgumentException e) {
+				//checkListの取得に失敗した場合、checkListをnullにして渡す
+				e.printStackTrace();
+				checkList = null;
+			}			
+
 			//解答フォームと解答の正誤判定
 			try {
 				checkList = questionService.checkAnswer(answerForm, answerList);
@@ -213,6 +220,22 @@ public class TestQuestionController {
 				e.printStackTrace();
 				checkList = null;
 			}
+			
+			/*
+			 * 問題プロパティに登録された問題数(qustionCount)によって操作を変更
+			 * 問題が最後かどうかを変数endとして表し、Modelに登録
+			 * 問題数が０の場合ホームへリダイレクト,問題が最後になったときにendをtrue,それ以外のときはリンクを次の問題にする
+			 */
+			Boolean end = false;
+			if(questionCount == 0) {
+				System.out.println("問題が0です");
+				return "redirect:/";
+			} else if(questionCount == number) {
+				end = true;
+			} else {
+				model.addAttribute("nextNumber", number+1);
+			}
+			model.addAttribute("end",end);
 			
 			//問題文をquestionとしてModelに追加
 			model.addAttribute("question", question);

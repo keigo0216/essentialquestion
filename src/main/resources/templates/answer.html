@@ -7,101 +7,136 @@
 <body>
 <div th:fragment="answer_contents">
 	<div class="page-header">
-		<h1>問題</h1>
+		<h1>解答</h1>
+		<div class="text-right"><a th:href="@{/}">章選択へ</a></div>	
 	</div>
 	<!-- 問題文 -->
-	<div><span>問題</span><span th:text=${number}></span></div>
+		
+	<h2><span>問題</span><span th:text=${number}></span></h2>
+	<div id="question">
 	<div th:text="${question}">問題が見つかりません。</div>
-	
+	</div>
 	<!-- 解答数に応じて解答欄を変更 -->
-	<div th:if="${answerCounter eq 1}">
-		<table border="1">
-			<tr>
-				<td>解答1</td>
-				<td type="text" th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
-				<!-- endがtrue,falseかによってリンクを変更 -->
-				<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a>		
- 			</tr>
- 		</table>
-	</div>
-	<div th:if="${answerCounter eq 2}">
-		<table border="1">
-			<tr>
-				<td>解答1</td>
-				<td th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
- 			</tr>
-			<tr>
-				<td>解答２</td>
-				<td th:text="${answerList[1]}" th:classappend="${!checkList[1]}? 'error'">答えが見つかりません。</td>
-				<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>				
- 			</tr>
-		</table>
-	</div>
-	<div th:if="${answerCounter eq 3}">
-		<table border="1">
-			<tr>
-				<td>解答１</td>
-				<td th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
- 			</tr>
- 			<tr>
-				<td>解答2</td>
-				<td th:text="${answerList[1]}" th:classappend="${!checkList[1]}? 'error'">答えが見つかりません。</td>
- 			</tr>
-			<tr>
-				<td>解答3</td>
-				<td th:text="${answerList[2]}" th:classappend="${!checkList[2]}? 'error'">答えが見つかりません。</td>
-				<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>				
- 			</tr>
-		</table>
-	</div>
-	<div th:if="${answerCounter eq 4}">
-		<table border="1">
-			<tr>
-				<td>解答1</td>
-				<td th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
- 			</tr>
- 			<tr>
-				<td>解答2</td>
-				<td th:text="${answerList[1]}" th:classappend="${!checkList[1]}? 'error'">答えが見つかりません。</td>
- 			</tr>
- 			<tr>
-				<td>解答3</td>
-				<td th:text="${answerList[2]}" th:classappend="${!checkList[2]}? 'error'">答えが見つかりません。</td>
- 			</tr>
-			<tr>
-				<td>解答4</td>
-				<td th:text="${answerList[3]}" th:classappend="${!checkList[3]}? 'error'">答えが見つかりません。</td>
-				<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>				
- 			</tr>
-		</table>
-	</div>
-	<div th:if="${answerCounter eq 5}">
-		<table border="1">
-			<tr>
-				<td>解答1</td>
-				<td th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
- 			</tr>
- 			<tr>
-				<td>解答2</td>
-				<td th:text="${answerList[1]}" th:classappend="${!checkList[1]}? 'error'">答えが見つかりません。</td>
- 			</tr>
- 			<tr>
-				<td>解答3</td>
-				<td th:text="${answerList[2]}" th:classappend="${!checkList[2]}? 'error'">答えが見つかりません。</td>
- 			</tr>
- 			<tr>
-				<td>解答4</td>
-				<td th:text="${answerList[3]}" th:classappend="${!checkList[3]}? 'error'">答えが見つかりません。</td>
- 			</tr>
-			<tr>
-				<td>解答5</td>
-				<td th:text="${answerList[4]}" th:classappend="${!checkList[4]}? 'error'">答えが見つかりません。</td>
-				<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>				
- 			</tr>
-		</table>
+	<div id=answerTable>
+		<div th:if="${answerCounter eq 1}">
+			<table border="1">
+				<tr>
+					<td>解答1</td>
+					<td type="text" th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
+					<!-- endがtrue,falseかによってリンクを変更 -->
+					<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a>		
+	 			</tr>
+	 		</table>
+		</div>
+		<div th:if="${answerCounter eq 2}">
+			<table border="1">
+				<tr>
+					<td>解答1</td>
+					<td th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+				<tr>
+					<td>解答２</td>
+					<td th:text="${answerList[1]}" th:classappend="${!checkList[1]}? 'error'">答えが見つかりません。</td>
+					<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>				
+	 			</tr>
+			</table>
+		</div>
+		<div th:if="${answerCounter eq 3}">
+			<table border="1">
+				<tr>
+					<td>解答１</td>
+					<td th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+	 			<tr>
+					<td>解答2</td>
+					<td th:text="${answerList[1]}" th:classappend="${!checkList[1]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+				<tr>
+					<td>解答3</td>
+					<td th:text="${answerList[2]}" th:classappend="${!checkList[2]}? 'error'">答えが見つかりません。</td>
+					<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>				
+	 			</tr>
+			</table>
+		</div>
+		<div th:if="${answerCounter eq 4}">
+			<table border="1">
+				<tr>
+					<td>解答1</td>
+					<td th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+	 			<tr>
+					<td>解答2</td>
+					<td th:text="${answerList[1]}" th:classappend="${!checkList[1]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+	 			<tr>
+					<td>解答3</td>
+					<td th:text="${answerList[2]}" th:classappend="${!checkList[2]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+				<tr>
+					<td>解答4</td>
+					<td th:text="${answerList[3]}" th:classappend="${!checkList[3]}? 'error'">答えが見つかりません。</td>
+					<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>				
+	 			</tr>
+			</table>
+		</div>
+		<div th:if="${answerCounter eq 5}">
+			<table border="1">
+				<tr>
+					<td>解答1</td>
+					<td th:text="${answerList[0]}" th:classappend="${!checkList[0]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+	 			<tr>
+					<td>解答2</td>
+					<td th:text="${answerList[1]}" th:classappend="${!checkList[1]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+	 			<tr>
+					<td>解答3</td>
+					<td th:text="${answerList[2]}" th:classappend="${!checkList[2]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+	 			<tr>
+					<td>解答4</td>
+					<td th:text="${answerList[3]}" th:classappend="${!checkList[3]}? 'error'">答えが見つかりません。</td>
+	 			</tr>
+				<tr>
+					<td>解答5</td>
+					<td th:text="${answerList[4]}" th:classappend="${!checkList[4]}? 'error'">答えが見つかりません。</td>
+					<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>				
+	 			</tr>
+			</table>
+		</div>
 	</div>
 	</form>
-	<a th:href="@{/}">ホームへ</a>						
+	
+	<!-- Wikipediaで検索できるワードを表示 -->
+	<h3>Wikipediaで検索</h3>
+	<div id="wikiSearch">
+		<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA][*/
+		const chapter =  /*[[${chapter}]]*/'';
+		const number = /*[[${number}]]*/'';
+		const answerList = /*[[${answerList}]]*/'';
+		const checkWikiList = /*[[${checkWikiList}]]*/'';
+		const target = document.getElementById("wikiSearch");
+		
+			//checkWikiListをループして、Wikipedia検索ができる問題番号ごとに処理
+			checkWikiList.forEach(function(i) {
+				//ワードのWikipedia検索リンクを作成
+				const aTag = document.createElement('a');
+				const url = '/wiki/practice/' + chapter + '/' + number + '/' + i;
+				aTag.setAttribute('href',url);
+				aTag.innerHTML = answerList[i];
+				target.appendChild(aTag);
+			
+				//ワードの間にカンマを挿入
+				if(!(i === checkWikiList[checkWikiList.length-1])) {
+					const spanTag = document.createElement('span');
+					spanTag.innerHTML = ',';
+					target.appendChild(spanTag);
+			}
+		}) 
+			/*]]>*/	
+		</script>
+	</div>			
 </div>
 </body>
 </html>

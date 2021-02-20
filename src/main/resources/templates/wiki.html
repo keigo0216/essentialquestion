@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>ウィキペディア検索ページ</title>
+</head>
+<body>
+<div th:fragment="wiki_contents">
+	<div class="page-header">
+		<h1>解答</h1>
+	<div class="text-right" ><a th:href="@{/}" class="text-right">章選択へ</a></div>	
+	</div>
+	<!-- 問題文 -->
+	<h2><span>問題</span><span th:text=${number}></span></h2>
+	<div id="question">
+		<div th:text="${question}">問題が見つかりません。</div>
+	</div>
+	
+	<!-- 「次の問題へ」ボタン 練習とテストのそれぞれでリンク先を変更 -->
+	<div th:if="${version == 'practice'}">
+		<table class="wikiTable" border="1">
+			<tr>
+				<!-- endがtrue,falseかによってリンクを変更 -->
+				<td><a th:unless="${end}" th:href="@{/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>	
+ 			</tr>
+ 		</table>		
+	</div>
+		<div th:if="${version == 'test'}">
+		<table class="wikiTable" border="1">
+			<tr>
+				<!-- endがtrue,falseかによってリンクを変更 -->
+				<td><a th:unless="${end}" th:href="@{/test/question/{chapter}/{number}(chapter=${chapter},number=${nextNumber})}">次の問題へ</a></td>		
+ 			</tr>
+ 		</table>	
+	</div>
+	
+	<!-- Wikipediaで検索できる他のワードを表示 -->
+	<div id="wikiSearch" class="otherWords">
+		<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA][*/
+		const chapter =  /*[[${chapter}]]*/'';
+		const number = /*[[${number}]]*/'';
+		const answer = /*[[${answer}]]*/'';
+		const answerList = /*[[${answerList}]]*/'';
+		const checkWikiList = /*[[${checkWikiList}]]*/'';
+		
+		const target = document.getElementById("wikiSearch");
+		//checkWikiListをループして、Wikipedia検索ができる問題番号ごとに処理
+		checkWikiList.forEach(function(i) {
+			//Wikipedia表示がされているワード以外のWikipedia検索リンクを作成
+			if(!(i == answer)) {
+				const aTag = document.createElement('a');
+				const url = '/wiki/practice/' + chapter + '/' + number + '/' + i;
+				aTag.setAttribute('href',url);
+				aTag.innerHTML = answerList[i];
+				target.appendChild(aTag);
+				//Wikipedia表示がされているワードがcheckWikiListの最後と同じかどうかで処理を変更
+				if(!(answer === checkWikiList[checkWikiList.length-1])) {
+					if(!(i === checkWikiList[checkWikiList.length-1])) {
+						const spanTag = document.createElement('span');
+						spanTag.innerHTML = ',';
+						target.appendChild(spanTag);
+					}
+				} else if(answer === checkWikiList[checkWikiList.length-1]) {
+					if(!(i === checkWikiList[checkWikiList.length-2])) {
+						const spanTag = document.createElement('span');
+						spanTag.innerHTML = ',';
+						target.appendChild(spanTag);
+					}
+				}
+			}
+		})
+		/*]]>*/				
+		</script>
+	</div>
+	
+	
+	<!-- wikiAPI検索結果をHTMLに表示 -->
+	<h3 th:text="${answerList[answer]}"></h3>
+	<div id="wikipedia">
+		<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA][*/
+		const JsonStr = /*[[${JsonStr}]]*/'';
+		const data = JSON.parse(JsonStr);
+		for (let id in data.query.pages) {
+			  const extractStr = data.query.pages[id].extract;
+			  if(typeof extractStr !== 'undefined') {
+				  console.log('success');
+				  document.write(extractStr);
+			  }　else {
+				  document.write('wikipediaにこのワードは存在しません。');
+			  }
+			}
+		/*]]>*/	
+		</script>
+	</div>
+</div>
+</body>
+</html>

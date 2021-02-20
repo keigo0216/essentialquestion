@@ -8,25 +8,27 @@
 <div th:fragment="testQuestion_contents">
 	<div class="page-header">
 		<h1>問題</h1>
+		<div class="text-right"><a th:href="@{/}">章選択へ</a></div>	
 	</div>
 	<!-- 問題文 -->
-	<div><span>問題</span><span th:text=${number}></span></div>
-	<script type="text/javascript" th:inline="javascript">
-	/*<![CDATA][*/
-		var questionWords = /*[[${questionWords}]]*/'';
-		if(questionWords == '') {
-			document.write('問題が見つかりません。');
-		}
-		for(var i=0; i < questionWords.length; i++){
-			document.write(questionWords[i]);
-			if(i==(questionWords.length-1)){break;}
-			document.write('(　　　)');
-		}
-		/*]]>*/	
-	</script>
+		<h2><span>問題</span><span th:text=${number}></span></h2>
+		<div id='question'></div>
+		<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA][*/
+			const questionWords = /*[[${questionWords}]]*/'';
+			if(questionWords == '') {
+				document.write('問題が見つかりません。');
+			}
+			for(let i=0; i < questionWords.length; i++){
+				document.write(questionWords[i]);
+				if(i==(questionWords.length-1)){break;}
+				document.write('(　　　)');
+			}
+			/*]]>*/	
+		</script>
+	
+	
 	<form method="post" th:action="@{/test/question/{chapter}/{number}(chapter=${chapter},number=${number})}" th:object="${answerForm}">
-	
-	
 		<!-- 解答数に応じて解答欄を変更 -->
 		<div th:if="${answerCounter eq 1}">
 			<table border="1">
@@ -114,7 +116,6 @@
 			</table>
 		</div>
 	</form>
-	<a th:href="@{/test/chapter}">ホームへ</a>						
 </div>
 </body>
 </html>
